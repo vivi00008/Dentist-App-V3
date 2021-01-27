@@ -79,7 +79,7 @@ const MainApp = () => {
         <PaperProvider>
             <NavigationContainer>
                 <Tab.Navigator
-                    initialRouteName='Feed'
+                    initialRouteName='RentStack'
                     tabBarOptions={{
                         activeTintColor: "#DE71C0",
                     }}>
