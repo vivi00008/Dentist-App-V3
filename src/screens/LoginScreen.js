@@ -11,6 +11,7 @@ import {
 import { TextInput } from "react-native-paper";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import {UserContext} from '../context/UserContext'
+import userApi from '../api/userApi';
 
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
@@ -19,8 +20,25 @@ const LoginScreen = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const doLogin = () => {
-        user.setIsAuth(true)
+    const doLogin = async () => {
+
+        try{
+            const response = await userApi.post("/login-doctor", {
+                username: username,
+                password: password,
+            },{
+                headers:{
+                    'content-type':'application/json'
+                }
+            })
+            console.log(response.data)
+            if(response.data.success){
+                user.setIsAuth(true)
+                user.setToken(response.data.token)
+            }
+        }catch{
+
+        }
     }
 
     return (
@@ -96,7 +114,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     dentistLogo: {
-        width: WIDTH / 6.5,
+        width: WIDTH / 7,
         height: HEIGHT / 15,
         left: 0,
     },

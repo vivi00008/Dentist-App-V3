@@ -7,6 +7,7 @@ import RentScreen from './screens/rent/RentScreen'
 import StatusScreen from './screens/status/StatusScreen'
 import ProfileScreen from './screens/profile/ProfileScreen'
 import FeatherIcon from 'react-native-vector-icons/Feather'
+import RoomTypeScreen from './screens/rent/RoomTypeScreen'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -28,6 +29,12 @@ const RentStack = () => {
                 component={RentScreen}
                 options={{ title: "หน้าหลัก", headerShown:false}}
             />
+            <Stack.Screen
+                name='RoomTypeScreen'
+                component={RoomTypeScreen}
+                options={{ title:'',headerShown:false}}
+            />
+
         </Stack.Navigator>
     )
 }
@@ -83,21 +90,6 @@ const MainApp = () => {
                     tabBarOptions={{
                         activeTintColor: "#DE71C0",
                     }}>
-                    
-                    <Tab.Screen
-                        name='StatusStack'
-                        component={StatusStack}
-                        options={{
-                            tabBarLabel: "ติดตามสถานะ",
-                            tabBarIcon: ({ color, size }) => (
-                                <FeatherIcon
-                                    name='layers'
-                                    size={size}
-                                    color={color}
-                                />
-                            ),
-                        }}
-                    />
                     <Tab.Screen
                         name='RentStack'
                         component={RentStack}
@@ -112,6 +104,21 @@ const MainApp = () => {
                             ),
                         }}
                     />
+                    <Tab.Screen
+                        name='StatusStack'
+                        component={StatusStack}
+                        options={{
+                            tabBarLabel: "ติดตามสถานะ",
+                            tabBarIcon: ({ color, size }) => (
+                                <FeatherIcon
+                                    name='layers'
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    
                     <Tab.Screen
                         name='Profile'
                         component={ProfileStack}
