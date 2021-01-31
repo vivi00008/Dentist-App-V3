@@ -1,5 +1,5 @@
 import React from "react"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, StackActions } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { Provider as PaperProvider } from "react-native-paper"
@@ -8,6 +8,7 @@ import StatusScreen from './screens/status/StatusScreen'
 import ProfileScreen from './screens/profile/ProfileScreen'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import RoomTypeScreen from './screens/rent/RoomTypeScreen'
+import DateScreen from './screens/rent/DateScreem'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -33,6 +34,11 @@ const RentStack = () => {
                 name='RoomTypeScreen'
                 component={RoomTypeScreen}
                 options={{ title:'',headerShown:false}}
+            />
+            <Stack.Screen 
+                name="DateScreen"
+                component={DateScreen}
+                options={{title:'Date',headerShown:false}}
             />
 
         </Stack.Navigator>

@@ -2,10 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntIcon from "react-native-vector-icons/AntDesign";
-import {
-    FlatList,
-    TouchableOpacity,
-} from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import floorApi from "../../api/floorApi";
 import { UserContext } from "../../context/UserContext";
@@ -19,7 +16,7 @@ const RoomTypeScreen = () => {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(false);
     const [floorData, setFloorData] = useState([]);
-    const [selected, setSelected] = useState()
+    const [selected, setSelected] = useState(false);
 
     const getFloor = async () => {
         const response = await floorApi.get("/floors", {
@@ -57,16 +54,25 @@ const RoomTypeScreen = () => {
         return dataList;
     };
 
-    const chooseCard = (item) =>{
-        setSelected(item)
-    }
+    const chooseCard = (item) => {
+        setSelected(item);
+    };
 
     const renderFloorCard = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.cardStyle} onPress={() => chooseCard(item)}>
-                <FloorCard title={item.name} selected={selected === item}/>
+            <TouchableOpacity
+                style={styles.cardStyle}
+                onPress={() => chooseCard(item)}
+            >
+                <FloorCard title={item.name} selected={selected === item} />
             </TouchableOpacity>
         );
+    };
+
+    const doNext = () => {
+        if (selected) {
+            navigation.navigate("DateScreen", { id: selected.id });
+        }
     };
 
     const numCardColumns = 2;
@@ -89,7 +95,10 @@ const RoomTypeScreen = () => {
                         renderItem={renderFloorCard}
                         numColumns={numCardColumns}
                     />
-                    <TouchableOpacity style={styles.loginButton}>
+                    <TouchableOpacity
+                        style={styles.loginButton}
+                        onPress={doNext}
+                    >
                         <Text style={styles.textButton}>ถัดไป</Text>
                         <FeatherIcon
                             name="arrow-right"
