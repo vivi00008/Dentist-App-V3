@@ -59,6 +59,9 @@ const RoomTypeScreen = () => {
     };
 
     const renderFloorCard = ({ item }) => {
+        if (item.empty) {
+            return null;
+        }
         return (
             <TouchableOpacity
                 style={styles.cardStyle}
@@ -95,17 +98,19 @@ const RoomTypeScreen = () => {
                         renderItem={renderFloorCard}
                         numColumns={numCardColumns}
                     />
-                    <TouchableOpacity
-                        style={styles.loginButton}
-                        onPress={doNext}
-                    >
-                        <Text style={styles.textButton}>ถัดไป</Text>
-                        <FeatherIcon
-                            name="arrow-right"
-                            size={24}
-                            style={styles.iconArrow}
-                        />
-                    </TouchableOpacity>
+                    {selected ? (
+                        <TouchableOpacity
+                            style={styles.loginButton}
+                            onPress={doNext}
+                        >
+                            <Text style={styles.textButton}>ถัดไป</Text>
+                            <FeatherIcon
+                                name="arrow-right"
+                                size={24}
+                                style={styles.iconArrow}
+                            />
+                        </TouchableOpacity>
+                    ) : null}
                 </View>
             </SafeAreaView>
         </LinearGradient>
@@ -177,6 +182,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontFamily: "kanitRegular",
         color: "white",
+    },
+    emptyStyle: {
+        flex: 1,
+        margin: 15,
+        backgroundColor: "transparent",
     },
 });
 

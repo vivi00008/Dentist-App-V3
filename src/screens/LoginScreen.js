@@ -31,7 +31,10 @@ const LoginScreen = () => {
                     'content-type':'application/json'
                 }
             })
+            console.log('Press')
+            console.log(response.data)
             if(response.data.success){
+  
                 user.setIsAuth(true)
                 user.setToken(response.data.token)
             }
