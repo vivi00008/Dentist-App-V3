@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import {
     View,
     Text,
@@ -14,8 +14,9 @@ import { Calendar, LocaleConfig } from "react-native-calendars";
 import moment from "moment";
 import { UserContext } from "../../context/UserContext";
 import sessionApi from "../../api/sessionApi";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import FloorCard from "../../shared/components/FloorCard";
+import FeatherIcon from "react-native-vector-icons/Feather";
 
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
@@ -27,6 +28,7 @@ const DateScreen = (props) => {
     const [allSession, setAllSession] = useState([]);
     const [dateData, setDateData] = useState();
     const [selectTimeCard, setSelectTimeCard] = useState();
+    const [textShow, setTextShow] = useState()
 
     const navigation = useNavigation();
     const user = useContext(UserContext);
@@ -89,6 +91,8 @@ const DateScreen = (props) => {
     };
 
     const getSelectedDayEvents = (date) => {
+        setDateData([]);
+        setSelectTimeCard("");
         let markedDates = {};
         markedDates[date] = {
             selected: true,
@@ -102,6 +106,14 @@ const DateScreen = (props) => {
         let sessionData = allSession.filter((session) => session.date == date);
         sessionData.forEach((inList) => setDateData(inList.details));
         setIsSelectedDate(true);
+        if(sessionData.length > 0){
+            setTextShow('เลือกช่วงเวลา')
+        }
+
+        if(sessionData.length == 0){
+            setTextShow('ไม่พบช่วงเวลาที่เปิดให้จอง')
+        }
+        
     };
 
     const getSession = async () => {
@@ -122,26 +134,41 @@ const DateScreen = (props) => {
     }, []);
 
     const chooseCard = (item) => {
-        
+        setSelectTimeCard(item);
     };
 
-    const renderSessionCard = ({ item }) => {
-        console.log(item)
-        let time = "";
+    const renderFloorCard = ({ item }) => {
+        if (item.empty) {
+            return null;
+        }
+
+        let timeTitle = "";
         if (item.sessionInDay == "morning") {
-            time = "9.30-12.30";
+            timeTitle = "9.30-12.30";
         }
         if (item.sessionInDay == "afternoon") {
-            time = "13.30-16.30";
+            timeTitle = "13.30-16.30";
         }
+
         return (
-            <TouchableOpacity style={styles.timeCard} onPress={chooseCard}>
-                <FloorCard title={time}/>
+            <TouchableOpacity
+                style={styles.cardStyle}
+                onPress={() => chooseCard(item)}
+            >
+                <FloorCard
+                    title={timeTitle}
+                    selected={selectTimeCard === item}
+                />
             </TouchableOpacity>
         );
     };
+
+    const doNext = () => {
+        navigation.navigate('SeatsScreen', {id:selectTimeCard.id})
+    };
     const numCardColumns = 2;
     return isLoading ? (
+        <ScrollView showsVerticalScrollIndicator={false} >
         <LinearGradient
             colors={["#872f86", "#b565b4", "#ffffff"]}
             style={styles.root}
@@ -154,26 +181,48 @@ const DateScreen = (props) => {
                     <Text style={styles.textHeader}>วันที่ และ ช่วงเวลา</Text>
                 </View>
                 <View style={styles.contentBg}>
-                    <Calendar
-                        current={Date.now()}
-                        onDayPress={(date) =>
-                            getSelectedDayEvents(date.dateString)
-                        }
-                        markedDates={markedDates}
-                    />
-                    {isSelectedDate ? (
-                        <View>
-                            <FlatList
-                                data={formatDataList(dateData,numCardColumns)}
-                                renderItem={renderSessionCard}
-                                keyExtractor={(item) => item.id.toString()}
-                                numColumns={numCardColumns}
-                            />
-                        </View>
-                    ) : null}
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <Calendar
+                            current={Date.now()}
+                            onDayPress={(date) =>
+                                getSelectedDayEvents(date.dateString)
+                            }
+                            markedDates={markedDates}
+                        />
+                        {isSelectedDate ? (
+                            <View style={styles.timeSelect}>
+                                <Text style={styles.textTimeSelect}>{textShow}</Text>
+                                <FlatList
+                                    data={formatDataList(
+                                        dateData,
+                                        numCardColumns
+                                    )}
+                                    keyExtractor={(item) => item.id.toString()}
+                                    renderItem={renderFloorCard}
+                                    numColumns={numCardColumns}
+                                    scrollEnabled={false}
+                                />
+                            </View>
+                        ) : null}
+                        {selectTimeCard ? (
+                            <TouchableOpacity
+                                style={styles.loginButton}
+                                onPress={doNext}
+                            >
+                                <Text style={styles.textButton}>ถัดไป</Text>
+                                <FeatherIcon
+                                    name="arrow-right"
+                                    size={24}
+                                    style={styles.iconArrow}
+                                />
+                            </TouchableOpacity>
+                            
+                        ) : null}
+                    </ScrollView>
                 </View>
             </SafeAreaView>
         </LinearGradient>
+        </ScrollView>
     ) : (
         <View>
             <Text>Loading data ... Please wait</Text>
@@ -200,7 +249,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 12,
         marginTop: 28,
         padding: 12,
-        height: HEIGHT / 1.3,
+        height: HEIGHT / 1.2,
     },
     cardStyle: {
         margin: 15,
@@ -212,8 +261,8 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5,
+        width: WIDTH / 10,
     },
     loginButton: {
         flexDirection: "row",
@@ -252,9 +301,46 @@ const styles = StyleSheet.create({
 
         elevation: 5,
     },
-    row:{
-        flexDirection:'row'
-    }
+    row: {
+        flexDirection: "row",
+    },
+    loginButton: {
+        flexDirection: "row",
+        backgroundColor: "rgb(46,196,182)",
+        width: WIDTH / 1.8,
+        height: HEIGHT / 15,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 12,
+        alignSelf: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        marginVertical: 18,
+    },
+    iconArrow: {
+        color: "white",
+        right: 10,
+        position: "absolute",
+    },
+    textButton: {
+        fontSize: 18,
+        fontFamily: "kanitRegular",
+        color: "white",
+    },
+    textTimeSelect: {
+        fontFamily: "kanitRegular",
+        fontSize: 18,
+        alignSelf: "center",
+    },
+    timeSelect: {
+        paddingTop: 24,
+    },
 });
 
 export default DateScreen;

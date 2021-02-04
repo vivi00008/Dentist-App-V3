@@ -1,22 +1,24 @@
-import React from "react"
-import { NavigationContainer, StackActions } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import { Provider as PaperProvider } from "react-native-paper"
-import RentScreen from './screens/rent/RentScreen'
-import StatusScreen from './screens/status/StatusScreen'
-import ProfileScreen from './screens/profile/ProfileScreen'
-import FeatherIcon from 'react-native-vector-icons/Feather'
-import RoomTypeScreen from './screens/rent/RoomTypeScreen'
-import DateScreen from './screens/rent/DateScreem'
+import React from "react";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Provider as PaperProvider } from "react-native-paper";
+import RentScreen from "./screens/rent/RentScreen";
+import StatusScreen from "./screens/status/StatusScreen";
+import ProfileScreen from "./screens/profile/ProfileScreen";
+import FeatherIcon from "react-native-vector-icons/Feather";
+import RoomTypeScreen from "./screens/rent/RoomTypeScreen";
+import DateScreen from "./screens/rent/DateScreem";
+import SeatsScreen from "./screens/rent/SeatsScreen";
+import RentTeacherScreen from "./screens/rent/RentTeacherScreen";
 
-const Tab = createBottomTabNavigator()
-const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const RentStack = () => {
     return (
         <Stack.Navigator
-            initialRouteName='Rent'
+            initialRouteName="Rent"
             screenOptions={{
                 headerStyle: { backgroundColor: "#AA52A9" },
                 headerTintColor: "#fff",
@@ -24,31 +26,41 @@ const RentStack = () => {
                     fontWeight: "bold",
                     fontFamily: "kanitRegular",
                 },
-            }}>
+            }}
+        >
             <Stack.Screen
-                name='Rent'
+                name="Rent"
                 component={RentScreen}
-                options={{ title: "หน้าหลัก", headerShown:false}}
+                options={{ title: "หน้าหลัก", headerShown: false }}
             />
             <Stack.Screen
-                name='RoomTypeScreen'
+                name="RoomTypeScreen"
                 component={RoomTypeScreen}
-                options={{ title:'',headerShown:false}}
+                options={{ title: "", headerShown: false }}
             />
-            <Stack.Screen 
+            <Stack.Screen
                 name="DateScreen"
                 component={DateScreen}
-                options={{title:'Date',headerShown:false}}
+                options={{ title: "Date", headerShown: false }}
             />
-
+            <Stack.Screen
+                name="SeatsScreen"
+                component={SeatsScreen}
+                options={{ title: "Seats", headerShown: false }}
+            />
+            <Stack.Screen
+                name="RentTeacherScreen"
+                component={RentTeacherScreen}
+                options={{ title: "RentsTeacher", headerShown: false }}
+            />
         </Stack.Navigator>
-    )
-}
+    );
+};
 
 const StatusStack = () => {
     return (
         <Stack.Navigator
-            initialRouteName='Status'
+            initialRouteName="Status"
             screenOptions={{
                 headerStyle: { backgroundColor: "#AA52A9" },
                 headerTintColor: "#fff",
@@ -56,20 +68,21 @@ const StatusStack = () => {
                     fontWeight: "bold",
                     fontFamily: "kanitRegular",
                 },
-            }}>
+            }}
+        >
             <Stack.Screen
-                name='Status'
+                name="Status"
                 component={StatusScreen}
                 options={{ title: "สถานะ" }}
             />
         </Stack.Navigator>
-    )
-}
+    );
+};
 
 const ProfileStack = () => {
     return (
         <Stack.Navigator
-            initialRouteName='Profile'
+            initialRouteName="Profile"
             screenOptions={{
                 headerStyle: { backgroundColor: "#AA52A9" },
                 headerTintColor: "#fff",
@@ -77,33 +90,35 @@ const ProfileStack = () => {
                     fontWeight: "bold",
                     fontFamily: "kanitRegular",
                 },
-            }}>
+            }}
+        >
             <Stack.Screen
-                name='Profile'
+                name="Profile"
                 component={ProfileScreen}
                 options={{ title: "โปรไฟล์" }}
             />
         </Stack.Navigator>
-    )
-}
+    );
+};
 
 const MainApp = () => {
     return (
         <PaperProvider>
             <NavigationContainer>
                 <Tab.Navigator
-                    initialRouteName='RentStack'
+                    initialRouteName="RentStack"
                     tabBarOptions={{
                         activeTintColor: "#DE71C0",
-                    }}>
+                    }}
+                >
                     <Tab.Screen
-                        name='RentStack'
+                        name="RentStack"
                         component={RentStack}
                         options={{
                             tabBarLabel: "หน้าหลัก",
                             tabBarIcon: ({ color, size }) => (
                                 <FeatherIcon
-                                    name='home'
+                                    name="home"
                                     size={size}
                                     color={color}
                                 />
@@ -111,28 +126,28 @@ const MainApp = () => {
                         }}
                     />
                     <Tab.Screen
-                        name='StatusStack'
+                        name="StatusStack"
                         component={StatusStack}
                         options={{
                             tabBarLabel: "ติดตามสถานะ",
                             tabBarIcon: ({ color, size }) => (
                                 <FeatherIcon
-                                    name='layers'
+                                    name="layers"
                                     size={size}
                                     color={color}
                                 />
                             ),
                         }}
                     />
-                    
+
                     <Tab.Screen
-                        name='Profile'
+                        name="Profile"
                         component={ProfileStack}
                         options={{
                             tabBarLabel: "โปรไฟล์",
                             tabBarIcon: ({ color, size }) => (
                                 <FeatherIcon
-                                    name='user'
+                                    name="user"
                                     size={size}
                                     color={color}
                                 />
@@ -142,7 +157,7 @@ const MainApp = () => {
                 </Tab.Navigator>
             </NavigationContainer>
         </PaperProvider>
-    )
-}
+    );
+};
 
-export default MainApp
+export default MainApp;
