@@ -19,6 +19,7 @@ const RoomTypeScreen = () => {
     const [selected, setSelected] = useState(false);
 
     const getFloor = async () => {
+        setFloorData([])
         const response = await floorApi.get("/floors", {
             headers: {
                 Authorization: user.token,
@@ -26,11 +27,8 @@ const RoomTypeScreen = () => {
         });
         if (response.data.success) {
             const data = response.data.message;
-            let newFloorData = floorData;
-            for (let i = 0; i < data.length; i++) {
-                newFloorData.push(data[i]);
-            }
-            setFloorData(newFloorData);
+            setFloorData(data);
+            console.log(floorData)
             setIsLoading(true);
         }
     };
