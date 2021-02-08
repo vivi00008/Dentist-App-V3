@@ -11,7 +11,8 @@ import RoomTypeScreen from "./screens/rent/RoomTypeScreen";
 import DateScreen from "./screens/rent/DateScreem";
 import SeatsScreen from "./screens/rent/SeatsScreen";
 import RentTeacherScreen from "./screens/rent/RentTeacherScreen";
-import SolutionScreen from './screens/rent/SolutionScreen'
+import SolutionScreen from './screens/rent/SolutionScreen';
+import SuccessScreen from './screens/rent/SuccessScreen'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -58,6 +59,11 @@ const RentStack = () => {
                 name="SolutionScreen"
                 component={SolutionScreen}
                 options={{title:"SolutionScreen", headerShown:false}}
+            />
+            <Stack.Screen 
+            name="SuccessScreen"
+            component={SuccessScreen}
+            options={{title:"SuccessScreen", headerShown:false}}
             />
         </Stack.Navigator>
     );
