@@ -4,16 +4,14 @@ import { StyleSheet, Dimensions, View, Platform, TouchableOpacity} from "react-n
 
 const HEIGHT = Dimensions.get("window").height;
 const WIDTH = Dimensions.get("window").width;
-const FloorCard = ({ title, selected}) => {
+const FloorCard = ({ title, selected, label}) => {
     return (
-        
         <View style={[styles.card, selected && { backgroundColor:'#f1b261'}]}>
-            <Avatar.Image
-                source={{
-                    uri: "https://source.unsplash.com/1024x768/?nature",
-                }}
+            <Avatar.Text
+                label={label}
                 style={styles.center}
                 size={100}
+                labelStyle={{color:'#9b559a', fontFamily:'kanitRegular'}}
             />
             <Text style={[styles.textContent, selected&& {color:'white'}]}>{title}</Text>
         </View>
@@ -24,6 +22,9 @@ const styles = StyleSheet.create({
     center: {
         alignSelf: "center",
         marginVertical: 20,
+        backgroundColor:'#f4e7f4',
+        justifyContent:'center',
+        alignItems:'center'
     },
     card: {
         height: (Platform.OS === 'ios') ? HEIGHT * 0.22 :HEIGHT * 0.26,

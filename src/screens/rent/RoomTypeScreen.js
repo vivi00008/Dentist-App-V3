@@ -28,7 +28,6 @@ const RoomTypeScreen = () => {
         if (response.data.success) {
             const data = response.data.message;
             setFloorData(data);
-            console.log(floorData)
             setIsLoading(true);
         }
     };
@@ -65,13 +64,14 @@ const RoomTypeScreen = () => {
                 style={styles.cardStyle}
                 onPress={() => chooseCard(item)}
             >
-                <FloorCard title={item.name} selected={selected === item} />
+                <FloorCard title={item.name} selected={selected === item} label={item.name[0]} />
             </TouchableOpacity>
         );
     };
 
     const doNext = () => {
         if (selected) {
+            user.setRoom([selected.name])
             navigation.navigate("DateScreen", { id: selected.id });
         }
     };

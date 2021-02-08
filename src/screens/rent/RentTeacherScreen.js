@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import AntIcon from "react-native-vector-icons/AntDesign";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList, ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../../context/UserContext";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -12,7 +12,7 @@ import TeacherCard from '../../shared/components/TeacherCard'
 const WIDTH = Dimensions.get("window").width;
 const HEIGHT = Dimensions.get("window").height;
 const RentTeacherScreen = () =>{
-
+    const [selectTeacher, setSelectTeacher] = useState()
     const [isLoading, setIsLoading] = useState(false);
     const [teacherData, setTeacherData] = useState([])
     const navigation = useNavigation()
@@ -22,33 +22,42 @@ const RentTeacherScreen = () =>{
         navigation.goBack();
     };
 
-    const getTeacher = async() => {
-        const respose = await userApi.get('/teachers', {
-            headers: {
-                Authorization: user.token,
-            },
-        })
-
-        if (respose.data.success){
-            const data = respose.data.message
-            setTeacherData(data)
-            console.log(respose.data.message)
-            setIsLoading(true)
-            console.log(teacherData)
-        }
+    const chooseTeacher = (item) =>{
+        setSelectTeacher(item)
     }
 
-    useEffect(() => {
-        getTeacher()
-    }, [])
 
     const renderTeacher = ({item}) => {
         return (
-            <TouchableOpacity>
-                <TeacherCard title={item.id}/>
+            <TouchableOpacity style={styles.teacherCard} onPress={() => chooseTeacher(item)}>
+                <TeacherCard name={item.name} selected={selectTeacher === item}/>
             </TouchableOpacity>
         )
     }
+
+    const doNext =() =>{
+        user.setTeacherName(selectTeacher.name)
+        user.setTeacherId(selectTeacher.id)
+        navigation.navigate('SolutionScreen')
+    }
+
+    const getTeacher = async () => {
+        const response = await userApi.get("/teachers", {
+            headers: {
+                Authorization: user.token,
+            },
+        });
+        if (response.data.success) {
+            const data = response.data.message;
+            setTeacherData(data)
+            setIsLoading(true)
+        }
+    };
+
+    useEffect(() => {
+        getTeacher();
+    }, []);
+
 
     return isLoading ? (
         <LinearGradient
@@ -66,8 +75,22 @@ const RentTeacherScreen = () =>{
                     <FlatList 
                         data={teacherData}
                         keyExtractor={(item) => item.id.toString()}
-                        render={renderTeacher}
+                        renderItem={renderTeacher}
+                        showsVerticalScrollIndicator={false}
                     />
+                    {selectTeacher ? (
+                        <TouchableOpacity
+                            style={styles.loginButton}
+                            onPress={doNext}
+                        >
+                            <Text style={styles.textButton}>ถัดไป</Text>
+                            <FeatherIcon
+                                name="arrow-right"
+                                size={24}
+                                style={styles.iconArrow}
+                            />
+                        </TouchableOpacity>
+                    ) : null}
                 </View>
             </SafeAreaView>
         </LinearGradient>
@@ -98,6 +121,38 @@ const styles = StyleSheet.create({
         marginTop: 28,
         padding: 12,
         height: HEIGHT / 1.3,
+    },
+    teacherCard:{
+        padding:10
+    },
+    loginButton: {
+        flexDirection: "row",
+        backgroundColor: "rgb(46,196,182)",
+        width: WIDTH / 1.8,
+        height: HEIGHT / 15,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 12,
+        alignSelf: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        marginVertical: 18,
+    },
+    iconArrow: {
+        color: "white",
+        right: 10,
+        position: "absolute",
+    },
+    textButton: {
+        fontSize: 18,
+        fontFamily: "kanitRegular",
+        color: "white",
     },
 })
 

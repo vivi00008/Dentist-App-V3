@@ -33,6 +33,7 @@ const DateScreen = (props) => {
     const navigation = useNavigation();
     const user = useContext(UserContext);
 
+
     const doBack = () => {
         navigation.goBack();
     };
@@ -96,7 +97,7 @@ const DateScreen = (props) => {
         let markedDates = {};
         markedDates[date] = {
             selected: true,
-            selectedColor: "#f1b261",
+            selectedColor: "#2ec4b6",
             textColor: "#FFFFFF",
         };
         let serviceDate = moment(date);
@@ -143,11 +144,14 @@ const DateScreen = (props) => {
         }
 
         let timeTitle = "";
+        let label ="";
         if (item.sessionInDay == "morning") {
             timeTitle = "9.30-12.30";
+            label ="เช้า"
         }
         if (item.sessionInDay == "afternoon") {
             timeTitle = "13.30-16.30";
+            label="บ่าย"
         }
 
         return (
@@ -158,12 +162,16 @@ const DateScreen = (props) => {
                 <FloorCard
                     title={timeTitle}
                     selected={selectTimeCard === item}
+                    label={label}
                 />
             </TouchableOpacity>
         );
     };
 
     const doNext = () => {
+        user.setDate(selectTimeCard.date)
+        user.setTime(selectTimeCard.sessionInDay)
+        user.setSessionId(selectTimeCard.id)
         navigation.navigate('SeatsScreen', {id:selectTimeCard.id})
     };
     const numCardColumns = 2;

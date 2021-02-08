@@ -27,7 +27,6 @@ const SeatsScreen = (props) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [seatsData, setSeatsData] = useState([]);
-    const [selectSeat, setSeatSelect] = useState();
     const [selected, setSelected] = useState();
 
     const navigation = useNavigation();
@@ -106,6 +105,7 @@ const SeatsScreen = (props) => {
     };
 
     const doNext = () => {
+        user.setSeat(Object.keys(selected))
         navigation.navigate('RentTeacherScreen')
     };
 
@@ -168,6 +168,7 @@ const SeatsScreen = (props) => {
                         keyExtractor={(item) => Object.keys(item)}
                         numColumns={numCardColumns}
                         renderItem={renderSeat}
+                        showsVerticalScrollIndicator={false}
                     />
 
                     {selected ? (
