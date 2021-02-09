@@ -34,7 +34,7 @@ const LoginScreen = () => {
             console.log('Press')
             console.log(response.data)
             if(response.data.success){
-  
+                user.setUser(response.data)
                 user.setIsAuth(true)
                 user.setToken(response.data.token)
             }

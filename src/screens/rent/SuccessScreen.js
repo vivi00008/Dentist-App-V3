@@ -13,12 +13,6 @@ const SuccessScreen = () => {
 
     const navigation = useNavigation()
 
-    const doFollow = () => {
-        navigation.navigate('StatusStack', {
-            screen:'StatusScreen'
-        })
-    }
-    
     const doBack =() => {
         navigation.navigate('Rent')
     }

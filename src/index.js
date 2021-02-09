@@ -85,7 +85,7 @@ const StatusStack = () => {
             <Stack.Screen
                 name="Status"
                 component={StatusScreen}
-                options={{ title: "สถานะ" }}
+                options={{ title: "สถานะ", headerShown:false }}
             />
         </Stack.Navigator>
     );
@@ -107,7 +107,7 @@ const ProfileStack = () => {
             <Stack.Screen
                 name="Profile"
                 component={ProfileScreen}
-                options={{ title: "โปรไฟล์" }}
+                options={{ title: "โปรไฟล์", headerShown:false }}
             />
         </Stack.Navigator>
     );
