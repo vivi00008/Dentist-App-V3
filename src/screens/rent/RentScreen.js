@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     },
     iconContent: {
         top: -50,
-        backgroundColor: "#4bd295",
+        backgroundColor: "#c577c4",
         right: 20,
         position: "absolute",
     },

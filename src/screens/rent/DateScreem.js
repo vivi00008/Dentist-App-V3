@@ -104,7 +104,7 @@ const DateScreen = (props) => {
         serviceDate = serviceDate.format("YYYY-MM-DD");
         setMarkedDates(markedDates);
 
-        let sessionData = allSession.filter((session) => session.date == date);
+        let sessionData = (allSession.filter((session) => session.date == date)).sort(function(a, b){return b?.sessionInday - a?.sessionInday });
         sessionData.forEach((inList) => setDateData(inList.details));
         setIsSelectedDate(true);
         if(sessionData.length > 0){
