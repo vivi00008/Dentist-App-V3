@@ -31,10 +31,12 @@ const StatusScreen = () => {
         });
     };
 
-    const onRefresh = useCallback(() => {
+    const onRefresh = ()=> {
+
         setRefreshing(true);
+        getCard()
         wait(1000).then(() => setRefreshing(false));
-    }, []);
+    }
 
     const getCard = async () => {
         const response = await cartApi.get("/carts", {
@@ -43,10 +45,10 @@ const StatusScreen = () => {
             },
         });
         if (response.data.success) {
+            console.log(response.data.message)
             setCartData(response.data.message);
             setFilter(response.data.message);
             setIsLoading(true);
-            console.log(cartData)
         }
     };
 
@@ -72,19 +74,10 @@ const StatusScreen = () => {
     const chooseStatus = (status) => {
         if (status !== "All") {
             setFilter([...cartData.filter((e) => e.state === status)]);
-            console.log(filter);
         } else {
             setFilter(cartData);
         }
         setStatus(status);
-    };
-
-    const renderCart = ({ item }) => {
-        return (
-            <View style={styles.renderCart}>
-                <CartCard teacherName={item.teacherName} name={user?.user?.name} id={user?.user?.username}/>
-            </View>
-        );
     };
 
     return isLoading ? (
@@ -125,12 +118,13 @@ const StatusScreen = () => {
                             </TouchableOpacity>
                         ))}
                     </View>
-                    <FlatList
-                        data={filter}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={renderCart}
-                        showsVerticalScrollIndicator={false}
-                    />
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                    {filter.map((item) => (
+                        <View style={styles.renderCart}>
+                        <CartCard teacherName={item?.teacherName} name={user?.user?.name} id={user?.user?.username} roomType={item?.floor_docs?.name} date={item?.session_docs.end} seat={item?.reservation?.seats} time={item?.session_docs?.sessionInDay} state={item?.state}/>
+                    </View>
+                    ))}
+                    </ScrollView>
                 </View>
             </ScrollView>
         </ImageBackground>

@@ -34,6 +34,9 @@ const LoginScreen = () => {
             console.log('Press')
             console.log(response.data)
             if(response.data.success){
+                if(response.data.role === 'doctor'){
+                    user.setIsDoctor(true)
+                }
                 user.setUser(response.data)
                 user.setIsAuth(true)
                 user.setToken(response.data.token)

@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
     const [seat, setSeat] = useState([]);
     const [teacherName, setTeacherName] = useState();
     const [teacherId, setTeacherId] = useState();
+    const [isDoctor, setIsDoctor] = useState(false)
 
     return (
         <UserContext.Provider
@@ -37,6 +38,8 @@ export const UserProvider = ({ children }) => {
                 setTeacherName,
                 teacherId,
                 setTeacherId,
+                isDoctor,
+                setIsDoctor
             }}
         >
             {children}
